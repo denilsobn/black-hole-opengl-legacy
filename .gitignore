@@ -7,6 +7,9 @@
 *.o
 *.obj
 
+simulacao
+simulacao.exe
+
 # Precompiled Headers
 *.gch
 *.pch

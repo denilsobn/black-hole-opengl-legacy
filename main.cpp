@@ -74,7 +74,6 @@ void initStars() {
         float theta = 2.0f * PI * u;               // Angulo azimutal (0 a 2PI)
         float phi = acos(2.0f * v - 1.0f);         // Angulo zenital (0 a PI)
 
-        // Adiciona aleatoriedade
         float radius = STAR_RADIUS + ((float)rand() / RAND_MAX * 200.0f - 100.0f);
 
         // Converte de esfericas (radius, theta, phi) para cartesianas (x, y, z)
@@ -82,7 +81,6 @@ void initStars() {
         stars[i].y = radius * sin(phi) * sin(theta);
         stars[i].z = radius * cos(phi);
 
-        // Varia as cores das estrelas 
         float colorRand = (float)rand() / RAND_MAX;
         if (colorRand > 0.85f) {
             stars[i].r = 0.7f; stars[i].g = 0.8f; stars[i].b = 1.0f; // Estrelas Azuis
@@ -117,8 +115,8 @@ void initParticulas() {
 }
 
 void init() {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // O vazio do espaco eh preto
-    glEnable(GL_DEPTH_TEST);              // Ativa o teste de profundidade (Z-Buffer)
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
+    glEnable(GL_DEPTH_TEST);            
     glDisable(GL_LIGHTING);
     
     // suavizacao dos pontos para as estrelas parecerem circulos ao inves de quadrados (gl_points)
@@ -151,7 +149,7 @@ void drawAccretionDisk(bool drawBehind, float camX, float camY, float camZ) {
         float py = particulas[i].altura;
         float pz = particulas[i].raio * sin(particulas[i].angle);
 
-        // Produto Escalar para saber se esta atras ou na frente
+        // Produto Escalar para cortar o eixo
         float dotPlane = (px * camX) + (py * camY) + (pz * camZ);
         bool isBehind = (dotPlane < 0.0f);
 
@@ -241,10 +239,10 @@ void display() {
         for (int j = 0; j < GRID_RES; j++) {
             float x = -1.0f + i * square;
             float y = -1.0f + j * square;
-            drawDistorcion(x, y);
-            drawDistorcion(x + square, y);
-            drawDistorcion(x + square, y + square);
-            drawDistorcion(x, y + square);
+            drawDistorcion(x, y); // lado A
+            drawDistorcion(x + square, y); // lado B
+            drawDistorcion(x + square, y + square); // lado D
+            drawDistorcion(x, y + square); // lado C
         }
     }
     glEnd();
@@ -262,7 +260,7 @@ void display() {
 
 void redimensionamento(int w, int h) {
     if (h == 0) h = 1;
-    
+
     winW = w;
     winH = h;
 
