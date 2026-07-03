@@ -42,7 +42,9 @@ bool mousePressed = false;
 
 void drawDistorcion(float x, float y) {
 
-    float r = sqrt(x * x + y * y);
+    float x_curr = x * (float(winW) / (float)winH); 
+
+    float r = sqrt(x_curr * x_curr + y * y);
 
     float u = x * 0.5f + 0.5f;
     float v = y * 0.5f + 0.5f;
@@ -51,7 +53,7 @@ void drawDistorcion(float x, float y) {
     
     if (r > eventHorizon) {
         
-        float mass = 0.007f;
+        float mass = 0.009f;
         float shift = mass / (r * r);
         // logica de distorcao absurda
         u -= shift * (x / r);
