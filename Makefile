@@ -19,19 +19,19 @@ OBJS_BASE = $(SRCS_BASE:.cpp=.o)
 EXEC ?= simulacao
 
 ifeq ($(UNAME_S),Windows)
-    OUT = run/$(EXEC).exe
+    OUT = $(EXEC).exe
     LIBS_BASE = -lopengl32 -lglu32 -lfreeglut -lIL
     LIB_ASSIMP = -lassimp
 endif
 
 ifeq ($(UNAME_S),Linux)
-    OUT = run/$(EXEC)
+    OUT = $(EXEC)
     LIBS_BASE = -lGL -lGLU -lglut -lIL
     LIB_ASSIMP = -lassimp
 endif
 
 ifeq ($(UNAME_S),Darwin)
-    OUT = run/$(EXEC)
+    OUT = $(EXEC)
     LIBS_BASE = -L/opt/homebrew/lib -framework OpenGL -framework GLUT -lIL
     LIB_ASSIMP = -lassimp
 endif
