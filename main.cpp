@@ -53,9 +53,9 @@ void drawDistorcion(float x, float y) {
     
     if (r > eventHorizon) {
         
+        // massa do buraco negro em unidades arbitrárias
         float mass = 0.009f;
         float shift = mass / (r * r);
-        // logica de distorcao absurda
         u -= shift * (x / r);
         v -= shift * (y / r);
 
@@ -73,12 +73,11 @@ void initStars() {
         float u = (float)rand() / RAND_MAX;
         float v = (float)rand() / RAND_MAX;
 
-        float theta = 2.0f * PI * u;               // Angulo azimutal (0 a 2PI)
-        float phi = acos(2.0f * v - 1.0f);         // Angulo zenital (0 a PI)
+        float theta = 2.0f * PI * u;               
+        float phi = acos(2.0f * v - 1.0f);         
 
         float radius = STAR_RADIUS + ((float)rand() / RAND_MAX * 200.0f - 100.0f);
 
-        // Converte de esfericas (radius, theta, phi) para cartesianas (x, y, z)
         stars[i].x = radius * sin(phi) * cos(theta);
         stars[i].y = radius * sin(phi) * sin(theta);
         stars[i].z = radius * cos(phi);
@@ -92,7 +91,6 @@ void initStars() {
             stars[i].r = 1.0f; stars[i].g = 1.0f; stars[i].b = 1.0f; // Estrelas Brancas
         }
         
-        // Varia o brilho
         float intensity = 0.2f + 0.8f * ((float)rand() / RAND_MAX);
         stars[i].r *= intensity;
         stars[i].g *= intensity;
@@ -102,7 +100,6 @@ void initStars() {
 
 void initParticulas() {
     for (int i = 0; i < NUM_PARTICLES; i++) {
-        // distribuicao nao linear
         float t = (float)rand() / RAND_MAX;
         particulas[i].raio = ISCO +  t * (DISK_OUTER_RADIUS - ISCO);
         particulas[i].angle = ((float)rand() / RAND_MAX) * 2.0f * PI;
@@ -121,7 +118,6 @@ void init() {
     glEnable(GL_DEPTH_TEST);            
     glDisable(GL_LIGHTING);
     
-    // suavizacao dos pontos para as estrelas parecerem circulos ao inves de quadrados (gl_points)
     glEnable(GL_POINT_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -151,7 +147,6 @@ void drawAccretionDisk(bool drawBehind, float camX, float camY, float camZ) {
         float py = particulas[i].altura;
         float pz = particulas[i].raio * sin(particulas[i].angle);
 
-        // Produto Escalar para cortar o eixo
         float dotPlane = (px * camX) + (py * camY) + (pz * camZ);
         bool isBehind = (dotPlane < 0.0f);
 
@@ -241,10 +236,10 @@ void display() {
         for (int j = 0; j < GRID_RES; j++) {
             float x = -1.0f + i * square;
             float y = -1.0f + j * square;
-            drawDistorcion(x, y); // lado A
-            drawDistorcion(x + square, y); // lado B
-            drawDistorcion(x + square, y + square); // lado D
-            drawDistorcion(x, y + square); // lado C
+            drawDistorcion(x, y);
+            drawDistorcion(x + square, y);
+            drawDistorcion(x + square, y + square);
+            drawDistorcion(x, y + square);
         }
     }
     glEnd();
@@ -294,7 +289,6 @@ void mouseMotion(int x, int y) {
     }
 }
 
-// Funcao de animacao 
 void timer(int value) {
 
     for (int i = 0; i < NUM_PARTICLES; i++) {
@@ -323,7 +317,7 @@ void timer(int value) {
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); // cria dois buffers e ativa o Z-Buffer
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(winW, winH);
     glutCreateWindow("Buraco Negro");
 
